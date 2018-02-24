@@ -1,7 +1,9 @@
 package ch.starthack.volvo.nitro;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -33,13 +35,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        int playerScore = sharedPref.getInt("playerScore", initialScore);
+
         Intent intent = getIntent();
         Boolean won = intent.getBooleanExtra("playerWon", false);
         if (won) {
-            initialScore = initialScore + 2;
+            playerScore = playerScore + 2;
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("playerScore", playerScore);
+            editor.apply();
         }
         TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
-        totalPoints.setText(initialScore.toString());
+        totalPoints.setText("" + playerScore);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
