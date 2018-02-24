@@ -37,8 +37,10 @@
                     android:src="@drawable/ic_leave" />
 
                 <TextView
+                    android:id="@+id/eco_boost_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="25dp"
                     android:layout_marginLeft="@dimen/text_margin"
                     android:text="Eco Boost: 2" />
             </LinearLayout>
@@ -55,8 +57,10 @@
                     android:src="@drawable/ic_local_hospital_white_24dp" />
 
                 <TextView
+                    android:id="@+id/safety_boost_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="25dp"
                     android:layout_marginLeft="@dimen/text_margin"
                     android:text="Safety Boost: 5" />
 
@@ -75,8 +79,10 @@
                     android:src="@drawable/ic_group_white_24dp" />
 
                 <TextView
+                    android:id="@+id/sharing_boost_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="25dp"
                     android:layout_marginLeft="@dimen/text_margin"
                     android:text="Share Boost: 1" />
             </LinearLayout>

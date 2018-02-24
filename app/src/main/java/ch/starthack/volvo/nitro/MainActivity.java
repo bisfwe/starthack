@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,7 +28,15 @@ public class MainActivity extends AppCompatActivity {
     private ListView mainListView ;
     private PlayerAdapter listAdapter ;
     private List<Pair<String, Integer>> playerList;
-    private Integer initialScore= 35;
+    private Integer initialScore = 35;
+    private Integer initialEco = 3;
+    private Integer initialSafety = 1;
+    private Integer initialSharing = 2;
+
+    private Integer playerScore;
+    private Integer playerEcoBoost;
+    private Integer playerSharingBoost;
+    private Integer playerSafetyBoost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +45,45 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        int playerScore = sharedPref.getInt("playerScore", initialScore);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        playerScore = sharedPref.getInt("playerScore", initialScore);
+        playerEcoBoost = sharedPref.getInt("playerEcoBoost", initialEco);
+        playerSharingBoost = sharedPref.getInt("playerSharingBoost", initialSharing);
+        playerSafetyBoost = sharedPref.getInt("playerSafetyBoost", initialSafety);
 
         Intent intent = getIntent();
         Boolean won = intent.getBooleanExtra("playerWon", false);
         if (won) {
             playerScore = playerScore + 2;
-            SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("playerScore", playerScore);
+            editor.apply();
+        }
+        Integer extraEco = intent.getIntExtra("extraEcoBoost", 0);
+        Integer extraSafety = intent.getIntExtra("extraSafetyBoost", 0);
+        Integer extraSharing = intent.getIntExtra("extraSharingBoost", 0);
+        playerEcoBoost = playerEcoBoost + extraEco;
+        if (playerEcoBoost >= 0) {
+            editor.putInt("playerEcoBoost", playerEcoBoost);
+            editor.apply();
+        }
+        playerSharingBoost = playerSharingBoost + extraSharing;
+        if (playerSharingBoost >= 0) {
+            editor.putInt("playerSharingBoost", playerSharingBoost);
+            editor.apply();
+        }
+        playerSafetyBoost = playerSafetyBoost + extraSafety;
+        if (playerSafetyBoost != 0) {
+            editor.putInt("playerSafetyBoost", playerSafetyBoost);
             editor.apply();
         }
         TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
         totalPoints.setText("" + playerScore);
+        TextView ecoBoostView = (TextView) findViewById(R.id.eco_boost_number);
+        ecoBoostView.setText(playerEcoBoost.toString());
+        TextView safetyBoostView = (TextView) findViewById(R.id.safety_boost_number);
+        safetyBoostView.setText(playerSafetyBoost.toString());
+        TextView sharingBoostView = (TextView) findViewById(R.id.sharing_boost_number);
+        sharingBoostView.setText(playerSharingBoost.toString());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Race.class);
         intent.putExtra("playerName", name); //Optional parameters
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.ic_finish_flag_50)
@@ -147,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
         notificationManager.notify(33222111, mBuilder.build());
     }
 
@@ -155,9 +190,13 @@ public class MainActivity extends AppCompatActivity {
         // Create an explicit intent for an Activity in your app
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        intent.putExtra("extraEcoBoost", 2);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
+
+
+
                 .setSmallIcon(R.drawable.ic_leave)
                 .setContentTitle("NITRO Racing")
                 .setContentText("Well done! You earned 2 Eco boosts by driving ecologically!")
@@ -167,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
         notificationManager.notify(33222111, mBuilder.build());
     }
 
@@ -175,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
         // Create an explicit intent for an Activity in your app
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        intent.putExtra("extraSafetyBoost", -1);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.ic_local_hospital_white_24dp)
@@ -187,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
         notificationManager.notify(33222111, mBuilder.build());
     }
 }
