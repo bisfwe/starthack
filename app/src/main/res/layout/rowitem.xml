@@ -31,7 +31,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
         android:src="@drawable/ic_finish_flag_50"/>
 
 </LinearLayout>

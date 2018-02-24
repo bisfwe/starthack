@@ -92,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 Integer playerNumber = ThreadLocalRandom.current().nextInt(0, playerList.size());
                 Pair<String, Integer> randomPlayer = playerList.get(playerNumber);
                 Intent raceIntent = new Intent(MainActivity.this, Race.class);
-                raceIntent.putExtra("playerName", randomPlayer.first); //Optional parameters
+                raceIntent.putExtra("playerName", randomPlayer.first);
+                raceIntent.putExtra("ecoBoost", playerEcoBoost);
+                raceIntent.putExtra("safetyBoost", playerSafetyBoost);
+                raceIntent.putExtra("sharingBoost", playerSharingBoost);
                 MainActivity.this.startActivity(raceIntent);
             }
         });
@@ -119,7 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Pair<String, Integer> o = (Pair<String, Integer>) mainListView.getItemAtPosition(position);
                 Intent raceIntent = new Intent(MainActivity.this, Race.class);
-                raceIntent.putExtra("playerName", o.first); //Optional parameters
+                raceIntent.putExtra("playerName", o.first);
+                raceIntent.putExtra("ecoBoost", playerEcoBoost);
+                raceIntent.putExtra("safetyBoost", playerSafetyBoost);
+                raceIntent.putExtra("sharingBoost", playerSharingBoost);
                 MainActivity.this.startActivity(raceIntent);
             }
         });
@@ -194,9 +200,6 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
-
-
-
                 .setSmallIcon(R.drawable.ic_leave)
                 .setContentTitle("NITRO Racing")
                 .setContentText("Well done! You earned 2 Eco boosts by driving ecologically!")
