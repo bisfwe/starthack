@@ -93,12 +93,15 @@ public class Race extends AppCompatActivity {
 
         playerLabel = findViewById(R.id.player_label);
         playerLabel.setAllCaps(true);
+        playerLabel.setZ(1000);
         playerLabel.setText("YOU");
 
         opponentLabel = findViewById(R.id.opponent_label);
+        opponentLabel.setZ(1000);
         opponentLabel.setText(getIntent().getStringExtra("playerName"));
 
         countdownLabel = findViewById(R.id.countdown_label);
+        countdownLabel.setZ(1000);
         countdownLabel.setText("");
 
         new GameThread().start();
@@ -113,11 +116,7 @@ public class Race extends AppCompatActivity {
                 sleep(1000);
                 runOnUiThread(() -> countdownLabel.setText("3"));
                 sleep(1000);
-                runOnUiThread(() -> {
-                    countdownLabel.setText("2");
-                    playerLabel.setVisibility(View.INVISIBLE);
-                    opponentLabel.setVisibility(View.INVISIBLE);
-                });
+                runOnUiThread(() -> countdownLabel.setText("2"));
                 sleep(1000);
                 runOnUiThread(() -> countdownLabel.setText("1"));
                 sleep(1000);
