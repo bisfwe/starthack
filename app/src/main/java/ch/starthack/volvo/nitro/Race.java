@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -61,7 +62,7 @@ public class Race extends AppCompatActivity {
                     return super.performClick();
                 }
             };
-            boostButton.setBackgroundColor(Color.YELLOW);
+            boostButton.setBackgroundResource(R.drawable.fuel);
             boostButton.setZ(500);
             Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 35, 35, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
@@ -74,16 +75,27 @@ public class Race extends AppCompatActivity {
             props.add(boost);
         });
 
-        Arrays.asList(815, 1850, 2650).forEach(y -> {
+        List<Pair<Integer, Integer>> specials = new ArrayList<>();
+        if (getIntent().getIntExtra("ecoBoost", 0) > 0) {
+            specials.add(new Pair(815, R.drawable.fuel_eco));
+        }
+        if (getIntent().getIntExtra("sharingBoost", 0) > 0) {
+            specials.add(new Pair(1850, R.drawable.fuel_share));
+        }
+        if (getIntent().getIntExtra("safetyBoost", 0) > 0) {
+            specials.add(new Pair(2650, R.drawable.fuel_safe));
+        }
+
+        specials.forEach(p -> {
             ImageView boostButton = new AppCompatImageButton(this) {
                 @Override
                 public boolean performClick() {
                     return super.performClick();
                 }
             };
-            boostButton.setBackgroundColor(Color.BLUE);
+            boostButton.setBackgroundResource(p.second);
             boostButton.setZ(500);
-            Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 40, 40, boostButton);
+            Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, p.first, 40, 40, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
                 playerCar.boostStrength = 1.7;
                 playerCar.boostTime = 900;
@@ -96,7 +108,7 @@ public class Race extends AppCompatActivity {
 
         Arrays.asList(860, 1430, 2300, 2940).forEach(y -> {
             ImageView boostImage = new ImageView(this);
-            boostImage.setBackgroundColor(Color.YELLOW);
+            boostImage.setBackgroundResource(R.drawable.fuel);
             boostImage.setZ(500);
             Obstacle boost = new Obstacle(0.6 + Math.random()*0.3, y, 35, 35, boostImage);
             props.add(boost);
