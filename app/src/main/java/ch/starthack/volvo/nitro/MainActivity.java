@@ -3,6 +3,7 @@ package ch.starthack.volvo.nitro;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -25,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainActivity extends AppCompatActivity {
     private ListView mainListView ;
     private PlayerAdapter listAdapter ;
+    private List<Pair<String, Integer>> playerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Integer playerNumber = ThreadLocalRandom.current().nextInt(0, playerList.size());
+                Pair<String, Integer> randomPlayer = playerList.get(playerNumber);
                 Intent raceIntent = new Intent(MainActivity.this, Race.class);
-                //   raceIntent.putExtra("key", value); //Optional parameters
+                raceIntent.putExtra("playerName", randomPlayer.first); //Optional parameters
                 MainActivity.this.startActivity(raceIntent);
             }
         });
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create and populate a List of planet names.
         String[] players = new String[] { "Bob", "Tom", "Alice", "Luke"};
-        List<Pair<String, Integer>> playerList = new ArrayList<Pair<String, Integer>>();
+        playerList = new ArrayList<Pair<String, Integer>>();
         for (String player : players){
             playerList.add(new Pair<String, Integer>(player, ThreadLocalRandom.current().nextInt(30, 50 + 1)));
         }
@@ -70,7 +74,12 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(raceIntent);
             }
         });
-        showNotification("Bob");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showNotification("Donald");
+            }
+        }, 10000);
     }
 
     @Override
@@ -96,14 +105,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNotification(String name){
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Race.class);
+        intent.putExtra("playerName", name); //Optional parameters
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.ic_finish_flag_50)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
+                .setContentTitle("NITRO Racing")
+                .setContentText(name + " is nearby. Wanna beat him?")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
