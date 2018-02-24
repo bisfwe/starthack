@@ -101,6 +101,8 @@ public class Race extends AppCompatActivity {
         countdownLabel = findViewById(R.id.countdown_label);
         countdownLabel.setText("");
 
+        draw();
+
         new GameThread().start();
     }
 
@@ -115,7 +117,7 @@ public class Race extends AppCompatActivity {
                 runOnUiThread(() -> {
                     countdownLabel.setText("2");
                     playerLabel.setVisibility(View.INVISIBLE);
-                    playerLabel.setVisibility(View.INVISIBLE);
+                    opponentLabel.setVisibility(View.INVISIBLE);
                 });
                 sleep(1000);
                 runOnUiThread(() -> countdownLabel.setText("1"));
