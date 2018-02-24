@@ -34,5 +34,4 @@
         android:layout_marginLeft="@dimen/text_margin"
         android:src="@drawable/ic_finish_flag_50"/>
 
-
 </LinearLayout>
