@@ -126,7 +126,14 @@ public class Race extends AppCompatActivity {
                 e.printStackTrace();
             }
             runOnUiThread(() -> countdownLabel.setText("GO"));
-            new Thread(() -> { try { sleep(1000); } catch (InterruptedException e) {} runOnUiThread(() -> countdownLabel.setVisibility(View.INVISIBLE));}).start();
+            new Thread(() -> {
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(() -> countdownLabel.setVisibility(View.INVISIBLE));
+            }).start();
 
             final long tickDuration = 1000/FRAME_RATE;
             while (!raceOver) {
@@ -137,6 +144,12 @@ public class Race extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             Intent mainIntent = new Intent(Race.this.getApplicationContext(), MainActivity.class);
