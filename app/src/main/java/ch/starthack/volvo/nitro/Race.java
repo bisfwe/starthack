@@ -11,7 +11,7 @@ public class Race extends AppCompatActivity {
 
     private RelativeLayout rl;
     private Car playerCar, opponentCar;
-    private static final int FRAME_RATE = 30;
+    private static final int FRAME_RATE = 15;
     private boolean raceOver = false;
 
     @Override
@@ -29,7 +29,7 @@ public class Race extends AppCompatActivity {
         playerParams.topMargin = (int) playerCar.position;
         rl.addView(playerCar.image, playerParams);
 
-        opponentCar = new Car(new ImageView(this), 105);
+        opponentCar = new Car(new ImageView(this), 125);
         opponentCar.image.setBackgroundColor(Color.RED);
 
         RelativeLayout.LayoutParams opponentParams = new RelativeLayout.LayoutParams(30, 40);
@@ -58,14 +58,28 @@ public class Race extends AppCompatActivity {
     }
 
     private void draw() {
+        final int width = rl.getWidth();
+        final int height = rl.getMeasuredHeight();
+        final double fact = height / 400.0;
+        final int carSize = (int) (50*fact);
+
+        final double lastPos = Math.min(playerCar.position, opponentCar.position);
+
         rl.removeView(playerCar.image);
-        RelativeLayout.LayoutParams playerParams = new RelativeLayout.LayoutParams(30, 40);
-        playerParams.leftMargin = 50;
-        playerParams.topMargin = (int) playerCar.position;
+        RelativeLayout.LayoutParams playerParams = new RelativeLayout.LayoutParams(carSize, carSize);
+        playerParams.leftMargin = width/3 - carSize/2;
+        playerParams.topMargin = height - ((int) ((playerCar.position - lastPos + 50)*fact)) - carSize;
         rl.addView(playerCar.image, playerParams);
+
+        rl.removeView(opponentCar.image);
+        RelativeLayout.LayoutParams opponentParams = new RelativeLayout.LayoutParams(carSize, carSize);
+        opponentParams.leftMargin = 2*width/3 - carSize/2;
+        opponentParams.topMargin = height - ((int) ((opponentCar.position - lastPos + 50)*fact)) - carSize;
+        rl.addView(opponentCar.image, opponentParams);
     }
 
     private void update(long elapsedMillis) {
         playerCar.position += playerCar.speed * (elapsedMillis/1000.0);
+        opponentCar.position += opponentCar.speed * (elapsedMillis/1000.0);
     }
 }
