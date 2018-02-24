@@ -65,7 +65,7 @@ public class Race extends AppCompatActivity {
             };
             boostButton.setBackgroundResource(R.drawable.fuel);
             boostButton.setZ(500);
-            Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 35, 35, boostButton);
+            Obstacle boost = new Obstacle(0.05 + Math.random()*0.3, y, 32, 32, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
                 playerCar.boostStrength = 1.5;
                 playerCar.boostTime = 800;
@@ -96,7 +96,7 @@ public class Race extends AppCompatActivity {
             };
             boostButton.setBackgroundResource(p.second);
             boostButton.setZ(500);
-            Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, p.first, 40, 40, boostButton);
+            Obstacle boost = new Obstacle(0.05 + Math.random()*0.3, p.first, 40, 40, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
                 playerCar.boostStrength = 1.7;
                 playerCar.boostTime = 900;
@@ -122,7 +122,7 @@ public class Race extends AppCompatActivity {
             ImageView boostImage = new ImageView(this);
             boostImage.setBackgroundResource(R.drawable.fuel);
             boostImage.setZ(500);
-            Obstacle boost = new Obstacle(0.6 + Math.random()*0.3, y, 35, 35, boostImage);
+            Obstacle boost = new Obstacle(0.65 + Math.random()*0.3, y, 32, 32, boostImage);
             props.add(boost);
             opponentBoosts.add(boost);
         });
