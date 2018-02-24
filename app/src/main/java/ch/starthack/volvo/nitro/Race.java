@@ -29,6 +29,7 @@ public class Race extends AppCompatActivity {
     private List<Obstacle> props = new ArrayList<>();
     private List<Obstacle> opponentBoosts = new ArrayList<>();
     private TextView playerLabel, opponentLabel, countdownLabel;
+    private int ecoExtra, shareExtra, safeExtra;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -101,6 +102,17 @@ public class Race extends AppCompatActivity {
                 playerCar.boostTime = 900;
                 props.remove(boost);
                 rl.removeView(view);
+                switch (p.second) {
+                    case R.drawable.fuel_eco:
+                        ecoExtra = -1;
+                        break;
+                    case R.drawable.fuel_safe:
+                        safeExtra = -1;
+                        break;
+                    case R.drawable.fuel_share:
+                        shareExtra = -1;
+                        break;
+                }
                 return false;
             });
             props.add(boost);
@@ -193,6 +205,9 @@ public class Race extends AppCompatActivity {
 
             Intent mainIntent = new Intent(Race.this.getApplicationContext(), MainActivity.class);
             mainIntent.putExtra("playerWon", playerWon);
+            mainIntent.putExtra("extraEcoBoost", ecoExtra);
+            mainIntent.putExtra("extraSafetyBoost", safeExtra);
+            mainIntent.putExtra("extraSharingBoost", shareExtra);
             Race.this.startActivity(mainIntent);
         }
     }
