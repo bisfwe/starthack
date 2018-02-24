@@ -22,6 +22,7 @@ public class Race extends AppCompatActivity {
     private boolean raceOver = false;
     private boolean playerWon = false;
     private List<Obstacle> props = new ArrayList<>();
+    private List<Obstacle> opponentBoosts = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -41,7 +42,7 @@ public class Race extends AppCompatActivity {
         finish.image.setBackgroundColor(Color.BLACK);
         props.add(finish);
 
-        Arrays.asList(800, 1500, 2200, 3100).forEach(y -> {
+        Arrays.asList(300, 1500, 2200, 3100).forEach(y -> {
             ImageView boostButton = new AppCompatImageButton(this) {
                 @Override
                 public boolean performClick() {
@@ -58,6 +59,33 @@ public class Race extends AppCompatActivity {
                 return false;
             });
             props.add(boost);
+        });
+
+        Arrays.asList(800, 1850, 2650).forEach(y -> {
+            ImageView boostButton = new AppCompatImageButton(this) {
+                @Override
+                public boolean performClick() {
+                    return super.performClick();
+                }
+            };
+            boostButton.setBackgroundColor(Color.BLUE);
+            Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 40, 40, boostButton);
+            boostButton.setOnTouchListener((view, event) -> {
+                playerCar.boostStrength = 1.7;
+                playerCar.boostTime = 900;
+                props.remove(boost);
+                rl.removeView(view);
+                return false;
+            });
+            props.add(boost);
+        });
+
+        Arrays.asList(860, 1430, 2300, 2940).forEach(y -> {
+            ImageView boostImage = new ImageView(this);
+            boostImage.setBackgroundColor(Color.YELLOW);
+            Obstacle boost = new Obstacle(0.6 + Math.random()*0.3, y, 35, 35, boostImage);
+            props.add(boost);
+            opponentBoosts.add(boost);
         });
 
         new GameThread().start();
@@ -142,6 +170,18 @@ public class Race extends AppCompatActivity {
         if (Math.max(opponentCar.position, playerCar.position) > RACE_LENGTH) {
             raceOver = true;
             playerWon = playerCar.position >= opponentCar.position;
+        }
+
+        if (opponentCar.position > 780 && opponentBoosts.size() == 4
+                || opponentCar.position > 1380 && opponentBoosts.size() == 3
+                || opponentCar.position > 2210 && opponentBoosts.size() == 2
+                || opponentCar.position > 1840 && opponentBoosts.size() == 1) {
+            Obstacle boost = opponentBoosts.get(0);
+            runOnUiThread(() -> rl.removeView(boost.image));
+            props.remove(boost);
+            opponentBoosts.remove(0);
+            opponentCar.boostStrength = 1.4;
+            opponentCar.boostTime = 1000;
         }
     }
 }
