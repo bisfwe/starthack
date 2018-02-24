@@ -21,6 +21,8 @@ public class Race extends AppCompatActivity {
     private Car playerCar, opponentCar;
     private static final int FRAME_RATE = 15;
     private static final int RACE_LENGTH = 3500;
+    private int width, height, carSize;
+    private double fact;
     private boolean raceOver = false;
     private boolean playerWon = false;
     private List<Obstacle> props = new ArrayList<>();
@@ -34,12 +36,19 @@ public class Race extends AppCompatActivity {
         setContentView(R.layout.activity_race);
 
         rl = findViewById(R.id.game_layout);
+        rl.setBackgroundColor(Color.DKGRAY);
 
-        playerCar = new Car(new ImageView(this), 200);
+        playerCar = new Car(new ImageView(this), new ImageView(this), 200);
         playerCar.image.setImageResource(R.drawable.player_car);
+        playerCar.flame.setImageResource(R.drawable.flame);
+        playerCar.image.setZ(700);
+        playerCar.flame.setZ(699);
 
-        opponentCar = new Car(new ImageView(this), 225);
+        opponentCar = new Car(new ImageView(this), new ImageView(this), 225);
         opponentCar.image.setImageResource(R.drawable.opponent_car);
+        opponentCar.flame.setImageResource(R.drawable.flame);
+        playerCar.image.setZ(700);
+        playerCar.flame.setZ(699);
 
         Obstacle finish = new Obstacle(0.5, RACE_LENGTH, 500, 50, new ImageView(this));
         finish.image.setImageResource(R.drawable.finish_line);
@@ -53,6 +62,7 @@ public class Race extends AppCompatActivity {
                 }
             };
             boostButton.setBackgroundColor(Color.YELLOW);
+            boostButton.setZ(500);
             Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 35, 35, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
                 playerCar.boostStrength = 1.5;
@@ -72,6 +82,7 @@ public class Race extends AppCompatActivity {
                 }
             };
             boostButton.setBackgroundColor(Color.BLUE);
+            boostButton.setZ(500);
             Obstacle boost = new Obstacle(0.1 + Math.random()*0.3, y, 40, 40, boostButton);
             boostButton.setOnTouchListener((view, event) -> {
                 playerCar.boostStrength = 1.7;
@@ -86,6 +97,7 @@ public class Race extends AppCompatActivity {
         Arrays.asList(860, 1430, 2300, 2940).forEach(y -> {
             ImageView boostImage = new ImageView(this);
             boostImage.setBackgroundColor(Color.YELLOW);
+            boostImage.setZ(500);
             Obstacle boost = new Obstacle(0.6 + Math.random()*0.3, y, 35, 35, boostImage);
             props.add(boost);
             opponentBoosts.add(boost);
@@ -112,7 +124,19 @@ public class Race extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                runOnUiThread(Race.this::draw);
+                runOnUiThread(() -> {
+                    width = rl.getWidth();
+                    height = rl.getMeasuredHeight();
+                    fact = height / 400.0;
+                    carSize = (int) (55*fact);
+                    ImageView line = new ImageView(Race.this);
+                    line.setImageResource(R.drawable.line);
+                    RelativeLayout.LayoutParams lineParams = new RelativeLayout.LayoutParams((int) (40*fact), (int) (500*fact));
+                    lineParams.topMargin = 0;
+                    lineParams.leftMargin = (int) (width/2 - 40*fact/2);
+                    rl.addView(line, lineParams);
+                    draw();
+                });
                 sleep(1000);
                 runOnUiThread(() -> countdownLabel.setText("3"));
                 sleep(1000);
@@ -162,11 +186,6 @@ public class Race extends AppCompatActivity {
     }
 
     private void draw() {
-        final int width = rl.getWidth();
-        final int height = rl.getMeasuredHeight();
-        final double fact = height / 400.0;
-        final int carSize = (int) (55*fact);
-
         final double lastPos = Math.min(playerCar.position, opponentCar.position);
 
         for (Obstacle prop : props) {
@@ -179,16 +198,30 @@ public class Race extends AppCompatActivity {
             rl.addView(prop.image, propParams);
         }
 
+        rl.removeView(playerCar.flame);
         rl.removeView(playerCar.image);
         RelativeLayout.LayoutParams playerParams = new RelativeLayout.LayoutParams(carSize, carSize);
-        playerParams.leftMargin = width/3 - carSize/2 + (int) (playerCar.boostTime > 0.001 ? (Math.random() - 0.5) * 2 * fact : 0);
+        playerParams.leftMargin = width/4 - carSize/2 + (int) (playerCar.boostTime > 0.001 ? (Math.random() - 0.5) * 4 * fact : 0);
         playerParams.topMargin = height - ((int) ((playerCar.position - lastPos + 50)*fact)) - carSize;
+        if (playerCar.boostTime > 0.001) {
+            RelativeLayout.LayoutParams flameParams = new RelativeLayout.LayoutParams(carSize/3, carSize/2);
+            flameParams.leftMargin = playerParams.leftMargin + carSize/3;
+            flameParams.topMargin = playerParams.topMargin + 4*carSize/5;
+            rl.addView(playerCar.flame, flameParams);
+        }
         rl.addView(playerCar.image, playerParams);
 
         rl.removeView(opponentCar.image);
+        rl.removeView(opponentCar.flame);
         RelativeLayout.LayoutParams opponentParams = new RelativeLayout.LayoutParams(carSize, carSize);
-        opponentParams.leftMargin = 2*width/3 - carSize/2 + (int) (opponentCar.boostTime > 0.001 ? (Math.random() - 0.5) * 2 * fact : 0);
+        opponentParams.leftMargin = 3*width/4 - carSize/2 + (int) (opponentCar.boostTime > 0.001 ? (Math.random() - 0.5) * 4 * fact : 0);
         opponentParams.topMargin = height - ((int) ((opponentCar.position - lastPos + 50)*fact)) - carSize;
+        if (opponentCar.boostTime > 0.001) {
+            RelativeLayout.LayoutParams flameParams = new RelativeLayout.LayoutParams(carSize/3, carSize/2);
+            flameParams.leftMargin = opponentParams.leftMargin + carSize/3;
+            flameParams.topMargin = opponentParams.topMargin + 4*carSize/5;
+            rl.addView(opponentCar.flame, flameParams);
+        }
         rl.addView(opponentCar.image, opponentParams);
     }
 
@@ -210,9 +243,9 @@ public class Race extends AppCompatActivity {
         final double lastPos = Math.min(playerCar.position, opponentCar.position);
 
         props.removeIf(prop -> prop.y < lastPos - 130);
-        if (Math.random() > 0.9) {
-            Obstacle prop = new Obstacle(Math.random(), lastPos + 500, 5 + Math.random()*7, 5 + Math.random()*7, new ImageView(this));
-            prop.image.setBackgroundColor(Color.GRAY);
+        if (Math.random() > 0.93) {
+            Obstacle prop = new Obstacle(Math.random(), lastPos + 500, 15 + Math.random()*18, 15 + Math.random()*18, new ImageView(this));
+            prop.image.setImageResource(R.drawable.rock);
             props.add(prop);
         }
 
