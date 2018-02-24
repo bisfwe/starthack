@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +14,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mainListView ;
     private PlayerAdapter listAdapter ;
     private List<Pair<String, Integer>> playerList;
+    private Integer initialScore= 35;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        Intent intent = getIntent();
+        Boolean won = intent.getBooleanExtra("playerWon", false);
+        if (won) {
+            initialScore = initialScore + 2;
+        }
+        TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
+        totalPoints.setText(initialScore.toString());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mainListView = (ListView) findViewById( R.id.mainListView );
 
         // Create and populate a List of planet names.
-        String[] players = new String[] { "Bob", "Tom", "Alice", "Luke"};
+        String[] players = new String[] { "Alice", "Tom", "Bob", "Eve"};
         playerList = new ArrayList<Pair<String, Integer>>();
         for (String player : players){
             playerList.add(new Pair<String, Integer>(player, ThreadLocalRandom.current().nextInt(30, 50 + 1)));

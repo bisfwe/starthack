@@ -6,8 +6,10 @@
     >
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/list_player_avatar"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="@dimen/text_margin"
         android:src="@drawable/ic_person_outline_black_24dp"/>
 
     <TextView

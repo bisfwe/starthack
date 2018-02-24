@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class PlayerAdapter extends BaseAdapter {
     static class ViewHolder {
         public TextView playerName;
         public TextView playerScore;
+        public ImageView playerAvatar;
     }
 
     @Override
@@ -53,12 +55,14 @@ public class PlayerAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.playerName = (TextView) convertView.findViewById(R.id.list_player_name);
             holder.playerScore = (TextView) convertView.findViewById(R.id.list_player_score);
-
+            holder.playerAvatar = (ImageView) convertView.findViewById(R.id.list_player_avatar);
             convertView.setTag(holder);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        String[] colors = new String[]{"pink", "blue", "green", "purple", "red"};
 
         Pair<String, Integer> item = players.get(position);
 
@@ -66,7 +70,8 @@ public class PlayerAdapter extends BaseAdapter {
         holder.playerName.setTextColor(Color.BLACK);
         holder.playerScore.setText(item.second.toString());
         holder.playerScore.setTextColor(Color.BLACK);
-
+        Integer avatarId = this.mContext.getResources().getIdentifier("avatar_" + item.first.toLowerCase(), "drawable", "ch.starthack.volvo.nitro");
+        holder.playerAvatar.setImageResource(avatarId);
         return convertView;
     }
 }
