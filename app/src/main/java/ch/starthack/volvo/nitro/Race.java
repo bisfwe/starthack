@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,7 @@ public class Race extends AppCompatActivity {
     private boolean playerWon = false;
     private List<Obstacle> props = new ArrayList<>();
     private List<Obstacle> opponentBoosts = new ArrayList<>();
+    private TextView playerLabel, opponentLabel, countdownLabel;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -88,6 +91,16 @@ public class Race extends AppCompatActivity {
             opponentBoosts.add(boost);
         });
 
+        playerLabel = findViewById(R.id.player_label);
+        playerLabel.setAllCaps(true);
+        playerLabel.setText("YOU");
+
+        opponentLabel = findViewById(R.id.opponent_label);
+        opponentLabel.setText(getIntent().getStringExtra("playerName"));
+
+        countdownLabel = findViewById(R.id.countdown_label);
+        countdownLabel.setText("");
+
         new GameThread().start();
     }
 
@@ -95,6 +108,24 @@ public class Race extends AppCompatActivity {
 
         @Override
         public void run() {
+            try {
+                sleep(1000);
+                runOnUiThread(() -> countdownLabel.setText("3"));
+                sleep(1000);
+                runOnUiThread(() -> {
+                    countdownLabel.setText("2");
+                    playerLabel.setVisibility(View.INVISIBLE);
+                    playerLabel.setVisibility(View.INVISIBLE);
+                });
+                sleep(1000);
+                runOnUiThread(() -> countdownLabel.setText("1"));
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(() -> countdownLabel.setText("GO"));
+            new Thread(() -> { try { sleep(1000); } catch (InterruptedException e) {} runOnUiThread(() -> countdownLabel.setVisibility(View.INVISIBLE));}).start();
+
             final long tickDuration = 1000/FRAME_RATE;
             while (!raceOver) {
                 Race.this.update(tickDuration);
