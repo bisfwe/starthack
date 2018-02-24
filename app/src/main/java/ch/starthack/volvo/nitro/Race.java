@@ -145,6 +145,11 @@ public class Race extends AppCompatActivity {
                 }
             }
 
+            runOnUiThread(() -> {
+                countdownLabel.setText("YOU " + (playerWon ? "WIN!" : "LOSE!"));
+                countdownLabel.setVisibility(View.VISIBLE);
+            });
+
             try {
                 sleep(1000);
             } catch (InterruptedException e) {

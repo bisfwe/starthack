@@ -14,7 +14,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="51dp"
         android:layout_marginTop="38dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
     <TextView
         android:id="@+id/opponent_label"
@@ -23,7 +24,8 @@
         android:layout_alignBottom="@+id/player_label"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="70dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
     <TextView
         android:id="@+id/countdown_label"
@@ -32,5 +34,6 @@
         android:layout_below="@+id/opponent_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="101dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
 </RelativeLayout>
