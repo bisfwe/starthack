@@ -3,13 +3,14 @@ package ch.starthack.volvo.nitro;
 import android.widget.ImageView;
 
 class Obstacle {
-    double x, y, size;
+    double x, y, width, height;
     ImageView image;
 
-    Obstacle(double x, double y, double size, ImageView image) {
+    Obstacle(double x, double y, double width, double height, ImageView image) {
         this.x = x;
         this.y = y;
-        this.size = size;
+        this.width = width;
+        this.height = height;
         this.image = image;
     }
 }

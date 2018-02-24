@@ -1,9 +1,9 @@
 package ch.starthack.volvo.nitro;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,7 +16,9 @@ public class Race extends AppCompatActivity {
     private RelativeLayout rl;
     private Car playerCar, opponentCar;
     private static final int FRAME_RATE = 15;
+    private static final int RACE_LENGTH = 3500;
     private boolean raceOver = false;
+    private boolean playerWon = false;
     private List<Obstacle> props = new ArrayList<>();
 
     @Override
@@ -43,6 +45,9 @@ public class Race extends AppCompatActivity {
         });
         rl.addView(boostButton, boostParams);
 
+        Obstacle finish = new Obstacle(0.5, RACE_LENGTH, 500, 50, new ImageView(this));
+        finish.image.setBackgroundColor(Color.BLACK);
+        props.add(finish);
 
         new GameThread().start();
     }
@@ -61,6 +66,10 @@ public class Race extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            Intent mainIntent = new Intent(Race.this.getApplicationContext(), MainActivity.class);
+            mainIntent.putExtra("playerWon", playerWon);
+            Race.this.startActivity(mainIntent);
         }
     }
 
@@ -74,9 +83,10 @@ public class Race extends AppCompatActivity {
 
         for (Obstacle prop : props) {
             rl.removeView(prop.image);
-            int propSize = (int) (prop.size*fact);
-            RelativeLayout.LayoutParams propParams = new RelativeLayout.LayoutParams(propSize, propSize);
-            propParams.leftMargin = (int) (width*prop.x) - propSize/2;
+            int propWidth = (int) (prop.width*fact);
+            int propHeight = (int) (prop.height*fact);
+            RelativeLayout.LayoutParams propParams = new RelativeLayout.LayoutParams(propWidth, propHeight);
+            propParams.leftMargin = (int) (width*prop.x) - propWidth/2;
             propParams.topMargin = height - ((int) ((prop.y - lastPos + 50)*fact));
             rl.addView(prop.image, propParams);
         }
@@ -113,9 +123,14 @@ public class Race extends AppCompatActivity {
 
         props.removeIf(prop -> prop.y < lastPos - 100);
         if (Math.random() > 0.9) {
-            Obstacle prop = new Obstacle(Math.random(), lastPos + 500, 5 + Math.random()*10, new ImageView(this));
+            Obstacle prop = new Obstacle(Math.random(), lastPos + 500, 5 + Math.random()*7, 5 + Math.random()*7, new ImageView(this));
             prop.image.setBackgroundColor(Color.GRAY);
             props.add(prop);
+        }
+
+        if (Math.max(opponentCar.position, playerCar.position) > RACE_LENGTH) {
+            raceOver = true;
+            playerWon = playerCar.position >= opponentCar.position;
         }
     }
 }
