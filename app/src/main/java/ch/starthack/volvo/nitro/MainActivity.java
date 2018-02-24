@@ -90,9 +90,23 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showNotification("Donald");
+                showChallengeNotification("Donald");
             }
         }, 10000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showEcoNotification();
+            }
+        }, 15000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showPenaltyNotification();
+            }
+        }, 20000);
     }
 
     @Override
@@ -116,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showNotification(String name){
+    private void showChallengeNotification(String name){
         // Create an explicit intent for an Activity in your app
         Intent intent = new Intent(this, Race.class);
         intent.putExtra("playerName", name); //Optional parameters
@@ -129,6 +143,46 @@ public class MainActivity extends AppCompatActivity {
                 .setContentText(name + " is nearby. Wanna beat him?")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(33222111, mBuilder.build());
+    }
+
+    private void showEcoNotification(){
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.drawable.ic_leave)
+                .setContentTitle("NITRO Racing")
+                .setContentText("Well done! You earned 2 Eco boosts by driving ecologically!")
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(33222111, mBuilder.build());
+    }
+
+    private void showPenaltyNotification(){
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.drawable.ic_local_hospital_white_24dp)
+                .setContentTitle("NITRO Racing")
+                .setContentText("John! You didn't respect the speed limits! You lost 1 safety boost.")
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
