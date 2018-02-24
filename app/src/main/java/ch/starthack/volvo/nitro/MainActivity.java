@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent raceIntent = new Intent(MainActivity.this, Race.class);
                 //   raceIntent.putExtra("key", value); //Optional parameters
                 MainActivity.this.startActivity(raceIntent);
-                Snackbar.make(view, "Go to Race", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
 
@@ -57,6 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the ArrayAdapter as the ListView's adapter.
         mainListView.setAdapter( listAdapter );
+        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                Pair<String, Integer> o = (Pair<String, Integer>) mainListView.getItemAtPosition(position);
+                Intent raceIntent = new Intent(MainActivity.this, Race.class);
+                raceIntent.putExtra("playerName", o.first); //Optional parameters
+                MainActivity.this.startActivity(raceIntent);
+            }
+        });
     }
 
     @Override
