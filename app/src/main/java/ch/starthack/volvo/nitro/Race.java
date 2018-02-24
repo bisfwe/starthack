@@ -42,7 +42,7 @@ public class Race extends AppCompatActivity {
         opponentCar.image.setImageResource(R.drawable.opponent_car);
 
         Obstacle finish = new Obstacle(0.5, RACE_LENGTH, 500, 50, new ImageView(this));
-        finish.image.setBackgroundColor(Color.BLACK);
+        finish.image.setImageResource(R.drawable.finish_line);
         props.add(finish);
 
         Arrays.asList(380, 1500, 2200, 3100).forEach(y -> {
