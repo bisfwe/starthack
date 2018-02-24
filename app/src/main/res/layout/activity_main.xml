@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_finish_flag_50"
+        app:backgroundTint="@android:color/darker_gray"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="top|center_vertical|end" />
 

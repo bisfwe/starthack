@@ -67,9 +67,7 @@ public class PlayerAdapter extends BaseAdapter {
         Pair<String, Integer> item = players.get(position);
 
         holder.playerName.setText(item.first);
-        holder.playerName.setTextColor(Color.BLACK);
         holder.playerScore.setText(item.second.toString());
-        holder.playerScore.setTextColor(Color.BLACK);
         Integer avatarId = this.mContext.getResources().getIdentifier("avatar_" + item.first.toLowerCase(), "drawable", "ch.starthack.volvo.nitro");
         holder.playerAvatar.setImageResource(avatarId);
         return convertView;

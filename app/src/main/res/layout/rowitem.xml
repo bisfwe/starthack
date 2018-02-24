@@ -17,18 +17,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_margin"
-        android:textSize="32sp"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="32sp" />
     <TextView
         android:id="@+id/list_player_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="32sp"
+        android:textColor="@android:color/darker_gray"
         android:layout_weight="2"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
         android:src="@drawable/ic_finish_flag_50"/>
 
 
