@@ -31,10 +31,10 @@
 
                 <ImageView
                     android:id="@+id/eco_boost_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="34dp"
+                    android:layout_height="28dp"
                     android:layout_marginLeft="@dimen/text_margin"
-                    android:src="@drawable/ic_nature_white_24dp" />
+                    android:src="@drawable/ic_leave" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,12 +82,26 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:text="Total Points: 528" />
+            android:layout_height="@dimen/app_bar_height"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_person_outline_black_24dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:text="Total Points: 528" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
