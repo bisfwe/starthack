@@ -19,25 +19,68 @@
             android:layout_margin="@dimen/text_margin"
             android:text="Hi John! Your current statistics:" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:text="Eco Boost: 2" />
+            android:gravity="center_vertical|left">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:text="Safety Boost: 5" />
+            <ImageView
+                android:id="@+id/eco_boost_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_nature_white_24dp" />
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:text="Eco Boost: 2" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:text="Share Boost: 1" />
+            android:gravity="center_vertical|left">
+            <ImageView
+                android:id="@+id/eco_safety_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_local_hospital_white_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:text="Safety Boost: 5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left">
+
+            <ImageView
+                android:id="@+id/eco_share_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:src="@drawable/ic_group_white_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:text="Share Boost: 1" />
+
+
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
-
-
 
 </android.support.v4.widget.NestedScrollView>
