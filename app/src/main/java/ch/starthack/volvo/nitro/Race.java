@@ -36,16 +36,16 @@ public class Race extends AppCompatActivity {
         rl = findViewById(R.id.game_layout);
 
         playerCar = new Car(new ImageView(this), 200);
-        playerCar.image.setBackgroundColor(Color.GREEN);
+        playerCar.image.setImageResource(R.drawable.player_car);
 
         opponentCar = new Car(new ImageView(this), 225);
-        opponentCar.image.setBackgroundColor(Color.RED);
+        opponentCar.image.setImageResource(R.drawable.opponent_car);
 
         Obstacle finish = new Obstacle(0.5, RACE_LENGTH, 500, 50, new ImageView(this));
         finish.image.setBackgroundColor(Color.BLACK);
         props.add(finish);
 
-        Arrays.asList(300, 1500, 2200, 3100).forEach(y -> {
+        Arrays.asList(380, 1500, 2200, 3100).forEach(y -> {
             ImageView boostButton = new AppCompatImageButton(this) {
                 @Override
                 public boolean performClick() {
@@ -64,7 +64,7 @@ public class Race extends AppCompatActivity {
             props.add(boost);
         });
 
-        Arrays.asList(800, 1850, 2650).forEach(y -> {
+        Arrays.asList(815, 1850, 2650).forEach(y -> {
             ImageView boostButton = new AppCompatImageButton(this) {
                 @Override
                 public boolean performClick() {
@@ -101,8 +101,6 @@ public class Race extends AppCompatActivity {
         countdownLabel = findViewById(R.id.countdown_label);
         countdownLabel.setText("");
 
-        draw();
-
         new GameThread().start();
     }
 
@@ -111,6 +109,7 @@ public class Race extends AppCompatActivity {
         @Override
         public void run() {
             try {
+                runOnUiThread(Race.this::draw);
                 sleep(1000);
                 runOnUiThread(() -> countdownLabel.setText("3"));
                 sleep(1000);
@@ -162,7 +161,7 @@ public class Race extends AppCompatActivity {
         final int width = rl.getWidth();
         final int height = rl.getMeasuredHeight();
         final double fact = height / 400.0;
-        final int carSize = (int) (50*fact);
+        final int carSize = (int) (55*fact);
 
         final double lastPos = Math.min(playerCar.position, opponentCar.position);
 
