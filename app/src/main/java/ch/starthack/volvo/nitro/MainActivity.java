@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt("playerSafetyBoost", playerSafetyBoost);
             editor.apply();
         }
+        editor.commit();
         TextView totalPoints = (TextView) findViewById(R.id.totalPoints);
         totalPoints.setText("" + playerScore);
         TextView ecoBoostView = (TextView) findViewById(R.id.eco_boost_number);
