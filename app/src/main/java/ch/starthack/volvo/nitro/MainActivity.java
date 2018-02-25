@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showChallengeNotification("Donald");
+                showChallengeNotification("Alice");
             }
         }, 10000);
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.ic_finish_flag_50)
                 .setContentTitle("NITRO Racing")
-                .setContentText(name + " is nearby. Wanna beat him?")
+                .setContentText(name + " is nearby. Wanna beat her?")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
